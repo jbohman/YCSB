@@ -49,12 +49,13 @@ public class RiakClient extends DB {
         String host = props.getProperty("riak.host", "");
         String port = props.getProperty("riak.port", "8087");
         String bucket_name = props.getProperty("riak.bucket", "ycsb");
+        Integer bucket_n_val = Integer.parseInt(props.getProperty("riak.nval", "3"));
 
         PBClientConfig conf = new PBClientConfig.Builder().withHost(host).withPort(Integer.parseInt(port)).build();
 
         try {
             client = RiakFactory.newClient(conf);
-            bucket = client.createBucket(bucket_name).execute();
+            bucket = client.createBucket(bucket_name).nVal(bucket_n_val).execute();
         } catch (Exception e) {
             e.printStackTrace();
         }
